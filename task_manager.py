@@ -1,6 +1,6 @@
 # Future to-do:
-# GUI: always display() and re-render when another command is executed
-# Drag-and-drop in GUI's table when sorting is by priority: changes moved item's priority to the line you dragged it to (1-indexed)
+# GUI: always show output of display() and re-render when another command is executed
+# Drag-and-drop in GUI's table, when sorting is by priority, should change moved item's priority to the line you dragged it to (1-indexed)
 
 import datetime
 from tabulate import tabulate
@@ -81,7 +81,7 @@ def remove(name):
         if item.get_name() == name:
             task = item
             break
-    if task:
+    if task and task.priority is not None:
         for item in task_list:
             if item.priority > task.priority:
                 item.priority -= 1  # removing a task means shifting down everything above it
@@ -122,9 +122,9 @@ def update_priority(name, new_priority):
     if task:  # if we found a task of the right name
         old_priority = task.priority
         for other in task_list:
-            if other.priority < old_priority and other.priority >= new_priority:
+            if old_priority is not None and other.priority < old_priority and other.priority >= new_priority:
                 other.priority += 1
-            if other.priority > old_priority and other.priority <= new_priority:
+            if old_priority is not None and other.priority > old_priority and other.priority <= new_priority:
                 other.priority -= 1
         task.priority = new_priority
     save_data(memory_path)
@@ -138,7 +138,7 @@ def remove_priority(name):
             break
     if task:
         for t in task_list:
-            if t.priority >= task.priority:
+            if t.priority is not None and task.priority is not None and t.priority >= task.priority:
                 t.priority -= 1
         task.priority = None
     save_data(memory_path)
