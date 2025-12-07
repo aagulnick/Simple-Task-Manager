@@ -67,7 +67,7 @@ def add(task_name, task_due_date=None, task_priority=None):
     
     if task_priority is not None:
         for old_task in task_list:
-            if old_task.priority >= task_priority:
+            if old_task.priority is not None and old_task.priority >= task_priority:
                 old_task.priority += 1
 
     task = Task(task_name, due_date, task_priority)
@@ -81,9 +81,9 @@ def remove(name):
         if item.get_name() == name:
             task = item
             break
-    if task and task.priority is not None:
+    if task:
         for item in task_list:
-            if item.priority > task.priority:
+            if task.priority is not None and item.priority is not None and item.priority > task.priority:
                 item.priority -= 1  # removing a task means shifting down everything above it
         task_list.remove(task)
     save_data(memory_path)
@@ -122,9 +122,9 @@ def update_priority(name, new_priority):
     if task:  # if we found a task of the right name
         old_priority = task.priority
         for other in task_list:
-            if old_priority is not None and other.priority < old_priority and other.priority >= new_priority:
+            if old_priority is not None and other.priority is not None and other.priority < old_priority and other.priority >= new_priority:
                 other.priority += 1
-            if old_priority is not None and other.priority > old_priority and other.priority <= new_priority:
+            if old_priority is not None and other.priority is not None and other.priority > old_priority and other.priority <= new_priority:
                 other.priority -= 1
         task.priority = new_priority
     save_data(memory_path)
