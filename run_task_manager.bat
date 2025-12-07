@@ -1,2 +1,2 @@
 cd "C:\python\organization"
-python -i task_manager.py
+python gui_wrapper.py

@@ -5,6 +5,9 @@
 import datetime
 from tabulate import tabulate
 memory_path = "C:\python\organization\memory.txt"
+# some abbreviations below, so you can type sort(p) instead of sort("priority"), etc.
+p = "priority"
+d = "due date"
 
 def load_data(file_path):
     """Given a text file, load data into the task_list and current_sorting variables.
@@ -108,7 +111,8 @@ def display():
         task_list = sorted(task_list, key=lambda x: (x.get_priority() is None, x.get_priority()))
 
     print(f"Displaying To-Do List with sorting by {current_sorting}\n")
-    print(tabulate([[task.name, task.due_date, task.priority] for task in task_list], headers=["Name", "Due Date", "Priority"]))
+    # print(tabulate([[task.name, task.due_date, task.priority] for task in task_list], headers=["Name", "Due Date", "Priority"]))
+    return tabulate([[task.name, task.due_date, task.priority] for task in task_list], headers=["Name", "Due Date", "Priority"])
 
 
 def update_priority(name, new_priority):
